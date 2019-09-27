@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Imange Conversion Demo</title>
+</head>
+
+<body>
+
+    <input id="imageFileInput" type="file" />
+    <button onclick="convert();">Convert to Base64</button>
+    <button onclick="display();">Display Image</button>
+    <div id="containerDiv"></div>
+
+    <script type='text/javascript'>
+
+        var imageData = "";
+
+        function getBase64(file, callback) {
+            const reader = new FileReader();
+            reader.addEventListener('load', () => callback(reader.result));
+            reader.readAsDataURL(file);
+        }
+
+        function convert() {
+            imageData = "";
+
+            var filesSelected = document.getElementById("imageFileInput").files;
+            if (filesSelected.length == 0) {
+                alert('Choose an image');
+                return;
+            }
+            var fileToLoad = filesSelected[0];
+            getBase64(fileToLoad, function (base64Data) {
+                console.log("base 64 of file is", base64Data);
+                alert('Conversion completed');
+                imageData = base64Data;
+            });
+        }
+
+        function display() {
+            if(!imageData){
+                alert('No data found');
+            }
+            var newImage = document.createElement('img');
+            newImage.src = imageData;
+            var newDiv = document.createElement('div');
+            newDiv.innerHTML = newImage.outerHTML;
+            document.getElementById("containerDiv").appendChild(newDiv);
+
+            imageData = "";
+        }
+        
+    </script>
+
+</body>
+
+</html>
